@@ -52,3 +52,13 @@ func show(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	fmt.Fprintf(w, "read entry: s.data[%s] = %s", k, s.data[k])
 	s.m.RUnlock()
 }
+
+func update(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+	k := p.ByName("key")
+	v := p.ByName("value")
+
+	s.m.Lock()
+	s.data[k] = v
+	s.m.Unlock()
+	fmt.Fprintf(w, "updated: s.data[%s] = %s", k, v)
+}
